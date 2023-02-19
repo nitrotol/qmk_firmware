@@ -96,10 +96,10 @@ MSG_FILE_TOO_SMALL = The firmware is too small! $(CURRENT_SIZE)/$(MAX_SIZE)\n
 MSG_FILE_JUST_RIGHT = The firmware size is fine - $(CURRENT_SIZE)/$(MAX_SIZE) ($(PERCENT_SIZE)%%, $(FREE_SIZE) bytes free)\n
 MSG_FILE_NEAR_LIMIT = The firmware size is approaching the maximum - $(CURRENT_SIZE)/$(MAX_SIZE) ($(PERCENT_SIZE)%%, $(FREE_SIZE) bytes free)\n
 MSG_CHECK_MEM_SIZE = Checking memory size of $(TARGET).$(FIRMWARE_FORMAT)
-MSG_MEM_TOO_BIG = $(ERROR_COLOR)The firmware is too large!$(NO_COLOR) $(CURRENT_MEM)/$(MAX_MEM) ($(OVER_MEM) bytes over)\n
-MSG_MEM_TOO_SMALL = The firmware is too small! $(CURRENT_MEM)/$(MAX_MEM)\n
-MSG_MEM_JUST_RIGHT = The firmware size is fine - $(CURRENT_MEM)/$(MAX_MEM) ($(PERCENT_MEM)%%, $(FREE_MEM) bytes free)\n
-MSG_MEM_NEAR_LIMIT = The firmware size is approaching the maximum - $(CURRENT_MEM)/$(MAX_MEM) ($(PERCENT_MEM)%%, $(FREE_MEM) bytes free)\n
+MSG_MEM_TOO_BIG = $(ERROR_COLOR)The memory usage is too high!$(NO_COLOR) $(CURRENT_MEM)/$(MAX_MEM) ($(OVER_MEM) bytes over)\n
+MSG_MEM_TOO_SMALL = The memory is too small! $(CURRENT_MEM)/$(MAX_MEM)\n
+MSG_MEM_JUST_RIGHT = The memory usage is fine - $(CURRENT_MEM)/$(MAX_MEM) ($(PERCENT_MEM)%%, $(FREE_MEM) bytes free)\n
+MSG_MEM_NEAR_LIMIT = The memory usage is approaching the maximum - $(CURRENT_MEM)/$(MAX_MEM) ($(PERCENT_MEM)%%, $(FREE_MEM) bytes free)\n
 
 MSG_PYTHON_MISSING = $(ERROR_COLOR)ERROR:$(NO_COLOR) Cannot run \"qmk hello\"!\n\n\
 	Please run $(BOLD)qmk setup$(NO_COLOR) to install all the dependencies QMK requires.\n\n
