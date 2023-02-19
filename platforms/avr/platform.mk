@@ -110,6 +110,8 @@ DEBUG_HOST = localhost
 
 #============================================================================
 
+all: check-mem
+
 # Convert hex to bin.
 bin: $(BUILD_DIR)/$(TARGET).hex
 ifeq ($(BOOTLOADER),lufa-ms)

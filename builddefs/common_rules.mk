@@ -387,11 +387,6 @@ check-size:
 	$(eval FREE_SIZE=$(shell expr $(MAX_SIZE) - $(CURRENT_SIZE)))
 	$(eval OVER_SIZE=$(shell expr $(CURRENT_SIZE) - $(MAX_SIZE)))
 	$(eval PERCENT_SIZE=$(shell expr $(CURRENT_SIZE) \* 100 / $(MAX_SIZE)))
-	$(eval MAX_MEM=2560)
-	$(eval CURRENT_MEM=$(shell if [ -f $(BUILD_DIR)/$(TARGET).elf ]; then $(SIZE) --target=$(FORMAT) $(BUILD_DIR)/$(TARGET).elf | $(AWK) 'NR==2 {print $$2}'; else printf 0; fi))
-	$(eval FREE_MEM=$(shell expr $(MAX_MEM) - $(CURRENT_MEM)))
-	$(eval OVER_MEM=$(shell expr $(CURRENT_MEM) - $(MAX_MEM)))
-	$(eval PERCENT_MEM=$(shell expr $(CURRENT_MEM) \* 100 / $(MAX_MEM)))
 	if [ $(MAX_SIZE) -gt 0 ] && [ $(CURRENT_SIZE) -gt 0 ]; then \
 		$(SILENT) || printf "$(MSG_CHECK_FILESIZE)" | $(AWK_CMD); \
 		if [ $(CURRENT_SIZE) -gt $(MAX_SIZE) ]; then \
@@ -404,6 +399,17 @@ check-size:
 		    fi ; \
 		fi ; \
 	fi
+else
+check-size:
+	$(SILENT) || echo "$(MSG_CHECK_FILESIZE_SKIPPED)"
+endif
+
+check-mem:
+	$(eval MAX_MEM=2560)
+	$(eval CURRENT_MEM=$(shell if [ -f $(BUILD_DIR)/$(TARGET).elf ]; then $(SIZE) --target=$(FORMAT) $(BUILD_DIR)/$(TARGET).elf | $(AWK) 'NR==2 {print $$2}'; else printf 0; fi))
+	$(eval FREE_MEM=$(shell expr $(MAX_MEM) - $(CURRENT_MEM)))
+	$(eval OVER_MEM=$(shell expr $(CURRENT_MEM) - $(MAX_MEM)))
+	$(eval PERCENT_MEM=$(shell expr $(CURRENT_MEM) \* 100 / $(MAX_MEM)))
 	if [ $(MAX_MEM) -gt 0 ] && [ $(CURRENT_MEM) -gt 0 ]; then \
 		$(SILENT) || printf "$(MSG_CHECK_MEM_SIZE)" | $(AWK_CMD); \
 		if [ $(CURRENT_MEM) -gt $(MAX_MEM) ]; then \
@@ -416,10 +422,6 @@ check-size:
 		    fi ; \
 		fi ; \
 	fi
-else
-check-size:
-	$(SILENT) || echo "$(MSG_CHECK_FILESIZE_SKIPPED)"
-endif
 
 check-md5:
 	$(MD5SUM) $(BUILD_DIR)/$(TARGET).$(FIRMWARE_FORMAT)

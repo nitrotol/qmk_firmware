@@ -490,6 +490,7 @@ endif
 
 build: elf cpfirmware
 check-size: build
+check-mem: build
 check-md5: build
 objs-size: build
 

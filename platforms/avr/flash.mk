@@ -16,7 +16,7 @@ define EXEC_TEENSY
 	$(TEENSY_LOADER_CLI) -mmcu=$(MCU) -w -v $(BUILD_DIR)/$(TARGET).hex
 endef
 
-teensy: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware
+teensy: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware check-mem
 	$(call EXEC_TEENSY)
 
 DFU_PROGRAMMER ?= dfu-programmer
@@ -52,7 +52,7 @@ define EXEC_DFU
 	$(DFU_PROGRAMMER) $(MCU) reset
 endef
 
-dfu: $(BUILD_DIR)/$(TARGET).hex cpfirmware check-size
+dfu: $(BUILD_DIR)/$(TARGET).hex cpfirmware check-size check-mem
 	$(call EXEC_DFU)
 
 dfu-start:
@@ -115,18 +115,18 @@ define EXEC_AVRDUDE
 	fi
 endef
 
-avrdude: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware
+avrdude: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware check-mem
 	$(call EXEC_AVRDUDE)
 
-avrdude-loop: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware
+avrdude-loop: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware check-mem
 	while true; do \
 		$(call EXEC_AVRDUDE) ; \
 	done
 
-avrdude-split-left: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware
+avrdude-split-left: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware check-mem
 	$(call EXEC_AVRDUDE,eeprom-lefthand.eep)
 
-avrdude-split-right: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware
+avrdude-split-right: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware check-mem
 	$(call EXEC_AVRDUDE,eeprom-righthand.eep)
 
 define EXEC_USBASP
@@ -168,7 +168,7 @@ endef
 hid_bootloader: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware
 	$(call EXEC_HID_LUFA)
 
-flash: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware
+flash: $(BUILD_DIR)/$(TARGET).hex check-size cpfirmware check-mem
 	$(SILENT) || printf "Flashing for bootloader: $(BLUE)$(BOOTLOADER)$(NO_COLOR)\n"
 ifneq ($(strip $(PROGRAM_CMD)),)
 	$(UNSYNC_OUTPUT_CMD) && $(PROGRAM_CMD)
