@@ -110,7 +110,9 @@ DEBUG_HOST = localhost
 
 #============================================================================
 
+ifeq ($(SKIP_COMPILE),no)
 all: check-mem
+endif
 
 # Convert hex to bin.
 bin: $(BUILD_DIR)/$(TARGET).hex
