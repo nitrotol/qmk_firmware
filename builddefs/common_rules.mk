@@ -387,6 +387,11 @@ check-size:
 	$(eval FREE_SIZE=$(shell expr $(MAX_SIZE) - $(CURRENT_SIZE)))
 	$(eval OVER_SIZE=$(shell expr $(CURRENT_SIZE) - $(MAX_SIZE)))
 	$(eval PERCENT_SIZE=$(shell expr $(CURRENT_SIZE) \* 100 / $(MAX_SIZE)))
+	$(eval MAX_MEM=2560)
+	$(eval CURRENT_MEM=$(shell if [ -f $(BUILD_DIR)/$(TARGET).elf ]; then $(SIZE) --target=$(FORMAT) $(BUILD_DIR)/$(TARGET).elf | $(AWK) 'NR==2 {print $$2}'; else printf 0; fi))
+	$(eval FREE_MEM=$(shell expr $(MAX_MEM) - $(CURRENT_MEM)))
+	$(eval OVER_MEM=$(shell expr $(CURRENT_MEM) - $(MAX_MEM)))
+	$(eval PERCENT_MEM=$(shell expr $(CURRENT_MEM) \* 100 / $(MAX_MEM)))
 	if [ $(MAX_SIZE) -gt 0 ] && [ $(CURRENT_SIZE) -gt 0 ]; then \
 		$(SILENT) || printf "$(MSG_CHECK_FILESIZE)" | $(AWK_CMD); \
 		if [ $(CURRENT_SIZE) -gt $(MAX_SIZE) ]; then \
@@ -396,6 +401,18 @@ check-size:
 			$(PRINT_WARNING_PLAIN); printf " * $(MSG_FILE_NEAR_LIMIT)"; \
 		    else \
 			$(PRINT_OK); $(SILENT) || printf " * $(MSG_FILE_JUST_RIGHT)"; \
+		    fi ; \
+		fi ; \
+	fi
+	if [ $(MAX_MEM) -gt 0 ] && [ $(CURRENT_MEM) -gt 0 ]; then \
+		$(SILENT) || printf "$(MSG_CHECK_MEM_SIZE)" | $(AWK_CMD); \
+		if [ $(CURRENT_MEM) -gt $(MAX_MEM) ]; then \
+		    printf "\n * $(MSG_FILE_TOO_BIG)"; $(PRINT_ERROR_PLAIN); \
+		else \
+		    if [ $(FREE_MEM) -lt 512 ]; then \
+			$(PRINT_WARNING_PLAIN); printf " * $(MSG_MEM_NEAR_LIMIT)"; \
+		    else \
+			$(PRINT_OK); $(SILENT) || printf " * $(MSG_MEM_JUST_RIGHT)"; \
 		    fi ; \
 		fi ; \
 	fi
