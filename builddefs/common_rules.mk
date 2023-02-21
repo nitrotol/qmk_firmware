@@ -406,7 +406,9 @@ endif
 
 check-mem:
 	$(eval MAX_MEM=2560)
-	$(eval CURRENT_MEM=$(shell if [ -f $(BUILD_DIR)/$(TARGET).elf ]; then $(SIZE) --target=$(FORMAT) $(BUILD_DIR)/$(TARGET).elf | $(AWK) 'NR==2 {print $$2}'; else printf 0; fi))
+	$(eval CURRENT_DATA=$(shell if [ -f $(BUILD_DIR)/$(TARGET).elf ]; then $(SIZE) --target=$(FORMAT) $(BUILD_DIR)/$(TARGET).elf | $(AWK) 'NR==2 {print $$2}'; else printf 0; fi))
+	$(eval CURRENT_BSS=$(shell if [ -f $(BUILD_DIR)/$(TARGET).elf ]; then $(SIZE) --target=$(FORMAT) $(BUILD_DIR)/$(TARGET).elf | $(AWK) 'NR==2 {print $$3}'; else printf 0; fi))
+	$(eval CURRENT_MEM=$(shell expr $(CURRENT_DATA) + $(CURRENT_BSS)))
 	$(eval FREE_MEM=$(shell expr $(MAX_MEM) - $(CURRENT_MEM)))
 	$(eval OVER_MEM=$(shell expr $(CURRENT_MEM) - $(MAX_MEM)))
 	$(eval PERCENT_MEM=$(shell expr $(CURRENT_MEM) \* 100 / $(MAX_MEM)))
